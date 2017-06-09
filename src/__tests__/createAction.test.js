@@ -21,6 +21,7 @@ describe('createAction', () => {
       'export default something',
     ];
     it('creats a new import statement if it does not exist', () => {
+
       const header = [
         'import { ONE, TWO, THREE } from "othermodule";',
         'import module from "./something";',

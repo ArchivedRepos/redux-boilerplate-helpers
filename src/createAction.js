@@ -1,4 +1,4 @@
-/* @flow */
+// @flow
 import recast, { types } from 'recast';
 import { constant, camel } from 'change-case';
 import assert from 'assert';

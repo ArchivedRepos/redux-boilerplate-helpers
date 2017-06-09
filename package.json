@@ -7,10 +7,13 @@
     "assert": "^1.4.1",
     "babylon": "^6.17.2",
     "change-case": "^3.0.1",
+    "prettier": "^1.4.4",
     "recast": "^0.12.5"
   },
   "scripts": {
-    "start": "jscodeshift"
+    "start": "jscodeshift",
+    "test": "jest",
+    "coverage": "npm test -- --coverage"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -26,5 +29,17 @@
     "eslint-config-airbnb-base": "^11.2.0",
     "eslint-plugin-import": "^2.2.0",
     "jest": "^20.0.4"
+  },
+  "jest": {
+    "moduleDirectories": [
+      "src",
+      "node_modules"
+    ],
+    "coverageDirectory": "coverage",
+    "collectCoverage": false,
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "coveragePathIgnorePatterns": ["__*"]
   }
 }
