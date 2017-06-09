@@ -1,0 +1,12 @@
+node_modules
+typings
+keys.js
+dist
+npm-debug.log.env
+.env
+.vagrant
+coverage
+.nyc_output
+logfile.log
+npm-debug.log
+.idea
