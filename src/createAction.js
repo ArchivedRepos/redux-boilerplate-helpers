@@ -2,6 +2,7 @@ import fs from 'fs';
 import { join } from 'path';
 import recast, { types } from 'recast';
 import { constant, camel } from 'change-case';
+import assert from 'assert';
 
 const n = types.namedTypes;
 const b = types.builders;
@@ -9,6 +10,7 @@ const b = types.builders;
 export const parseOptions = {
   parser: {
     parse(source) {
+      // eslint-disable-next-line global-require
       return require('babylon').parse(source, {
         sourceType: 'module',
         plugins: ['flow', 'jsx', 'objectRestSpread'],
@@ -74,7 +76,7 @@ export const setImports = (
   }
 };
 
-export const createAction = (ast, name) => {
+export const tokenUsed = (ast, name) => {
   let exists = false;
   recast.visit(ast, {
     visitIdentifier(path) {
@@ -86,16 +88,18 @@ export const createAction = (ast, name) => {
       this.traverse(path);
     },
   });
+  return exists;
+};
+
+export const createAction = (ast, name) => {
+  const exists = tokenUsed(ast, name);
 
   if (!exists) {
     const newActionCreator = b.exportNamedDeclaration(
       b.variableDeclaration('const', [
         b.variableDeclarator(
           b.identifier(name.camel),
-          b.callExpression(
-            b.identifier('createAction'),
-            [b.identifier(name.constant)],
-          ),
+          b.callExpression(b.identifier('createAction'), [b.identifier(name.constant)]),
         ),
       ]),
     );
@@ -103,6 +107,47 @@ export const createAction = (ast, name) => {
   }
 };
 
+export const createReducerCase = (ast, name) => {
+  const exists = tokenUsed(ast, name);
+
+  const insertIntoSwitch = (switchStatement, caseStatement) => {
+    assert(n.SwitchStatement.check(switchStatement));
+    assert(n.SwitchCase.check(caseStatement));
+    const numCases = switchStatement.cases.length;
+    const defaultPresent = switchStatement.cases[numCases - 1].test === null;
+    if (defaultPresent) {
+      switchStatement.cases.splice(numCases - 1, 0, caseStatement);
+    } else {
+      switchStatement.cases.push(caseStatement);
+    }
+  };
+
+  if (!exists) {
+    recast.visit(ast, {
+      visitSwitchStatement(path) {
+        const node = path.node;
+        assert(n.SwitchStatement.check(node));
+        if (
+          node.discriminant.object.name === 'action' &&
+          node.discriminant.property.name === 'type'
+        ) {
+          const newCase = b.switchCase(
+            b.identifier(name.constant),
+            [b.returnStatement(
+              b.objectExpression(
+                [b.spreadProperty(
+                  b.identifier('state'),
+                )],
+              ),
+            )],
+          );
+          insertIntoSwitch(node, newCase);
+          this.abort();
+        }
+        this.traverse(path);
+      },
+    });
+  }
 };
 
 export const addConstant = (varName, { customValue, isError } = {}) => {

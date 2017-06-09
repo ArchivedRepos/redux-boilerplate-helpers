@@ -1,6 +1,12 @@
 /* eslint-env jest */
 import recast from 'recast';
-import { generateNames, setImports, createAction, parseOptions } from '../createAction';
+import {
+  generateNames,
+  setImports,
+  createAction,
+  parseOptions,
+  createReducerCase,
+} from '../createAction';
 
 describe('createAction', () => {
   const name = generateNames('TEST_ENTRY');
@@ -114,12 +120,10 @@ describe('createAction', () => {
 
       createAction(ast, name);
       const result = recast.print(ast).code;
-      expect(result).toEqual([
-        input,
-        `export const ${name.camel} = createAction(${name.constant});`,
-      ].join('\n'));
+      expect(result).toEqual(
+        [input, `export const ${name.camel} = createAction(${name.constant});`].join('\n'),
+      );
     });
-
 
     it('does not create an action creator if one already exists', () => {});
     const input = [
@@ -135,5 +139,66 @@ describe('createAction', () => {
     const result = recast.print(ast).code;
     expect(result).toEqual(input);
   });
-  
+
+  describe('Reducer Case', () => {
+    it('creates an entry for the action handler above default', () => {
+      const input = [
+        'import { createAction } from "redux-boilerplate-helpers";',
+        `import { ONE, ${name.constant} } from './constants';`,
+        'function testReducer(state = initialState, action) {',
+        '  switch(action.type) {',
+        '    case ONE:',
+        '      return { ...state, one: action.payload };',
+        '    default:',
+        '      return state;',
+        '  }',
+        '}',
+        'export default testReducer',
+      ].join('\n');
+
+      const ast = recast.parse(input, parseOptions);
+      createReducerCase(ast, name);
+      expect(ast).toMatchSnapshot();
+    });
+
+    it('creates an entry for the action handler at the end', () => {
+      const input = [
+        'import { createAction } from "redux-boilerplate-helpers";',
+        `import { ONE, ${name.constant} } from './constants';`,
+        'function testReducer(state = initialState, action) {',
+        '  switch(action.type) {',
+        '    case ONE:',
+        '      return { ...state, one: action.payload };',
+        '  }',
+        '}',
+        'export default testReducer',
+      ].join('\n');
+
+      const ast = recast.parse(input, parseOptions);
+      createReducerCase(ast, name);
+      expect(ast).toMatchSnapshot();
+    });
+
+    it('does not make any changes if the action is already handled', () => {
+      const input = [
+        'import { createAction } from "redux-boilerplate-helpers";',
+        `import { ONE, ${name.constant} } from './constants';`,
+        'function testReducer(state = initialState, action) {',
+        '  switch(action.type) {',
+        `    case ${name.constant}:`,
+        '      return { ...state, result: action.payload };',
+        '    case ONE:',
+        '      return { ...state, one: action.payload };',
+        '    default:',
+        '      return state;',
+        '  }',
+        '}',
+        'export default testReducer',
+      ].join('\n');
+      const ast = recast.parse(input, parseOptions);
+      createReducerCase(ast, name);
+      const result = recast.print(ast).code;
+      expect(result).toEqual(input);
+    });
+  });
 });
