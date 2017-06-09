@@ -38,9 +38,11 @@ describe('createAction', () => {
     setImports(ast, name);
     const result = recast.print(ast).code;
     expect(result).toEqual(
-      [`import { ONE, TWO, THREE, ${name.constant} } from './constants';`, header[1], ...bodycode].join(
-        '\n',
-      ),
+      [
+        `import { ONE, TWO, THREE, ${name.constant} } from './constants';`,
+        header[1],
+        ...bodycode,
+      ].join('\n'),
     );
   });
 

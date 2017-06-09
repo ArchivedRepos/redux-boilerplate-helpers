@@ -11,47 +11,38 @@ const constantCode = fs.readFileSync(join(codeLocation, 'constants.js'), 'utf8')
 const actionCode = fs.readFileSync(join(codeLocation, 'actions.js'), 'utf8');
 const reducerCode = fs.readFileSync(join(codeLocation, 'reducer.js'), 'utf8');
 
-
 export const parseOptions = {
   parser: {
     parse(source) {
       return require('babylon').parse(source, {
         sourceType: 'module',
-        plugins: [
-          'flow',
-          'jsx',
-          'objectRestSpread',
-        ],
+        plugins: ['flow', 'jsx', 'objectRestSpread'],
       });
     },
   },
 };
 
-export const generateNames = varName => (
-  { constant: constant(varName), camel: camel(varName) }
-);
+export const generateNames = varName => ({ constant: constant(varName), camel: camel(varName) });
 
-export const setImports = (ast, name, { insertHelper, moduleName = 'redux-boilerplate-helpers' } = {}) => {
+export const setImports = (
+  ast,
+  name,
+  { insertHelper, moduleName = 'redux-boilerplate-helpers' } = {},
+) => {
   // get all the import declarations in file
-  const importStatements = ast.program.body.filter(node => (
-    n.ImportDeclaration.check(node)
-  ));
+  const importStatements = ast.program.body.filter(node => n.ImportDeclaration.check(node));
 
   // check if file is importing from adjacent constants.js file
-  const constImport = importStatements.filter(node => (
-    n.Literal.check(node.source) && node.source.value === './constants'
-  ));
+  const constImport = importStatements.filter(
+    node => n.Literal.check(node.source) && node.source.value === './constants',
+  );
 
   if (constImport.length > 0) {
     const specifiers = constImport[0].specifiers;
-    const importExists = specifiers
-      .map(specifier => specifier.local.name)
-      .includes(name.constant);
+    const importExists = specifiers.map(specifier => specifier.local.name).includes(name.constant);
 
     if (!importExists) {
-      const newImport = b.importSpecifier(
-        b.identifier(name.constant),
-      );
+      const newImport = b.importSpecifier(b.identifier(name.constant));
       specifiers.push(newImport);
     }
   } else {
@@ -63,16 +54,17 @@ export const setImports = (ast, name, { insertHelper, moduleName = 'redux-boiler
   }
 
   if (insertHelper) {
-    const checkForHelper = (node) => {
+    const checkForHelper = node => {
       const hasLiteral = n.Literal.check(node.source);
       const hasIdentifier = node.specifiers.map(n.ImportSpecifier.check).every(val => val === true);
       const correctLiteral = node.source.value === moduleName;
 
       // make sure the other conditions are true before evaluating this one
-      const containsSpecifier = () => node.specifiers
-        .map(specifier => specifier.imported)
-        .map(imported => imported.name)
-        .includes('createAction');
+      const containsSpecifier = () =>
+        node.specifiers
+          .map(specifier => specifier.imported)
+          .map(imported => imported.name)
+          .includes('createAction');
       return hasLiteral && hasIdentifier && correctLiteral && containsSpecifier();
     };
     const helperImports = importStatements.filter(checkForHelper);
@@ -97,12 +89,14 @@ export const addConstant = (varName, { customValue, isError } = {}) => {
   const actionAst = recast.parse(actionCode, parseOptions);
   const reducerAst = recast.parse(reducerCode, parseOptions);
 
-  const newExport = b.exportNamedDeclaration(b.variableDeclaration('const', [
-    b.variableDeclarator(
-      b.identifier(name.constant),
-      b.literal(`__testfixtures__/${name.constant}`),
-    ),
-  ]));
+  const newExport = b.exportNamedDeclaration(
+    b.variableDeclaration('const', [
+      b.variableDeclarator(
+        b.identifier(name.constant),
+        b.literal(`__testfixtures__/${name.constant}`),
+      ),
+    ]),
+  );
   constAst.program.body.push(newExport);
   console.log(recast.print(constAst).code);
 
