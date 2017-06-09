@@ -12,21 +12,15 @@ exports[`File Operations adds an action to the files 5`] = `
 Array [
   Array [
     "/tmp",
-    Object {
-      "formatted": "",
-    },
+    "",
   ],
   Array [
     "/tmp",
-    Object {
-      "formatted": "",
-    },
+    "",
   ],
   Array [
     "/tmp",
-    Object {
-      "formatted": "",
-    },
+    "",
   ],
 ]
 `;
@@ -734,21 +728,15 @@ exports[`File Operations adds multiple actions to the files 5`] = `
 Array [
   Array [
     "/tmp",
-    Object {
-      "formatted": "",
-    },
+    "",
   ],
   Array [
     "/tmp",
-    Object {
-      "formatted": "",
-    },
+    "",
   ],
   Array [
     "/tmp",
-    Object {
-      "formatted": "",
-    },
+    "",
   ],
 ]
 `;
@@ -799,21 +787,15 @@ Array [
   ],
   Array [
     "/tmp",
-    Object {
-      "formatted": "",
-    },
+    "",
   ],
   Array [
     "/tmp",
-    Object {
-      "formatted": "",
-    },
+    "",
   ],
   Array [
     "/tmp",
-    Object {
-      "formatted": "",
-    },
+    "",
   ],
 ]
 `;

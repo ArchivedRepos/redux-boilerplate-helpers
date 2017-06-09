@@ -79,4 +79,12 @@ describe('File Operations', () => {
     expect(fs.readFileSync.mock.calls).toMatchSnapshot();
     expect(fs.readdirSync.mock.calls).toMatchSnapshot();
   });
+
+  it('does a dry run', () => {
+    const log = console.log;
+    console.log = jest.fn();
+
+    addReduxActions('./', [], { dry: true });
+    console.log = log;
+  });
 });
