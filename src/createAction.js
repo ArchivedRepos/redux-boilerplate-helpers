@@ -6,11 +6,6 @@ import { constant, camel } from 'change-case';
 const n = types.namedTypes;
 const b = types.builders;
 
-const codeLocation = join(__dirname, '__testfixtures__/addtoExisting');
-const constantCode = fs.readFileSync(join(codeLocation, 'constants.js'), 'utf8');
-const actionCode = fs.readFileSync(join(codeLocation, 'actions.js'), 'utf8');
-const reducerCode = fs.readFileSync(join(codeLocation, 'reducer.js'), 'utf8');
-
 export const parseOptions = {
   parser: {
     parse(source) {
@@ -80,7 +75,34 @@ export const setImports = (
 };
 
 export const createAction = (ast, name) => {
-  recast.visit()
+  let exists = false;
+  recast.visit(ast, {
+    visitIdentifier(path) {
+      const node = path.node;
+      if (node.name === name.constant && !n.ImportSpecifier.check(path.parent.node)) {
+        exists = true;
+        this.abort();
+      }
+      this.traverse(path);
+    },
+  });
+
+  if (!exists) {
+    const newActionCreator = b.exportNamedDeclaration(
+      b.variableDeclaration('const', [
+        b.variableDeclarator(
+          b.identifier(name.camel),
+          b.callExpression(
+            b.identifier('createAction'),
+            [b.identifier(name.constant)],
+          ),
+        ),
+      ]),
+    );
+    ast.program.body.push(newActionCreator);
+  }
+};
+
 };
 
 export const addConstant = (varName, { customValue, isError } = {}) => {
