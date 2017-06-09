@@ -31,7 +31,7 @@ export const generateNames = varName => (
   { constant: constant(varName), camel: camel(varName) }
 );
 
-export const setImports = (ast, name) => {
+export const setImports = (ast, name, { insertHelper, moduleName = 'redux-boilerplate-helpers' } = {}) => {
   // get all the import declarations in file
   const importStatements = ast.program.body.filter(node => (
     n.ImportDeclaration.check(node)
@@ -50,9 +50,9 @@ export const setImports = (ast, name) => {
 
     if (!importExists) {
       const newImport = b.importSpecifier(
-        b.identifier(name.constant)
+        b.identifier(name.constant),
       );
-      specifiers.push(newImport)
+      specifiers.push(newImport);
     }
   } else {
     const importStatement = b.importDeclaration(
@@ -60,6 +60,30 @@ export const setImports = (ast, name) => {
       b.literal('./constants'),
     );
     ast.program.body.splice(importStatements.length, 0, importStatement);
+  }
+
+  if (insertHelper) {
+    const checkForHelper = (node) => {
+      const hasLiteral = n.Literal.check(node.source);
+      const hasIdentifier = node.specifiers.map(n.ImportSpecifier.check).every(val => val === true);
+      const correctLiteral = node.source.value === moduleName;
+
+      // make sure the other conditions are true before evaluating this one
+      const containsSpecifier = () => node.specifiers
+        .map(specifier => specifier.imported)
+        .map(imported => imported.name)
+        .includes('createAction');
+      return hasLiteral && hasIdentifier && correctLiteral && containsSpecifier();
+    };
+    const helperImports = importStatements.filter(checkForHelper);
+
+    if (helperImports.length <= 0) {
+      const newHelperImport = b.importDeclaration(
+        [b.importSpecifier(b.identifier('createAction'))],
+        b.literal(moduleName),
+      );
+      ast.program.body.unshift(newHelperImport);
+    }
   }
 };
 
