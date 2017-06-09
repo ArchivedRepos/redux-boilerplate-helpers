@@ -6,6 +6,7 @@ import {
   createAction,
   parseOptions,
   createReducerCase,
+  createConst,
 } from '../createAction';
 
 describe('createAction', () => {
@@ -199,6 +200,32 @@ describe('createAction', () => {
       createReducerCase(ast, name);
       const result = recast.print(ast).code;
       expect(result).toEqual(input);
+    });
+  });
+
+  describe('Constant', () => {
+    it('adds a constant to the constants file', () => {
+      const input = ['export const ONE = "/test/ONE";', 'export const TWO = "/test/TWO";'].join(
+        '\n',
+      );
+      const ast = recast.parse(input, parseOptions);
+      createConst(ast, name, '/test');
+      const result = recast.print(ast).code;
+      expect(result).toEqual(
+        [input, `export const ${name.constant} = "/test/${name.constant}";`].join('\n'),
+      );
+    });
+
+    it('will not add a constant if it is already there', () => {
+      const input = [
+        'export const ONE = "/test/ONE";',
+        `export const ${name.constant} = "/test/${name.constant}";`,
+        'export const TWO = "/test/TWO";',
+      ].join('\n');
+      const ast = recast.parse(input, parseOptions);
+      createConst(ast, name, '/test');
+      const result = recast.print(ast).code;
+      expect(result).toEqual(result);
     });
   });
 });

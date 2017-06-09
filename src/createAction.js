@@ -131,16 +131,9 @@ export const createReducerCase = (ast, name) => {
           node.discriminant.object.name === 'action' &&
           node.discriminant.property.name === 'type'
         ) {
-          const newCase = b.switchCase(
-            b.identifier(name.constant),
-            [b.returnStatement(
-              b.objectExpression(
-                [b.spreadProperty(
-                  b.identifier('state'),
-                )],
-              ),
-            )],
-          );
+          const newCase = b.switchCase(b.identifier(name.constant), [
+            b.returnStatement(b.objectExpression([b.spreadProperty(b.identifier('state'))])),
+          ]);
           insertIntoSwitch(node, newCase);
           this.abort();
         }
@@ -150,26 +143,14 @@ export const createReducerCase = (ast, name) => {
   }
 };
 
-export const addConstant = (varName, { customValue, isError } = {}) => {
-  const name = generateNames(varName);
-  const constAst = recast.parse(constantCode, parseOptions);
-  const actionAst = recast.parse(actionCode, parseOptions);
-  const reducerAst = recast.parse(reducerCode, parseOptions);
-
-  const newExport = b.exportNamedDeclaration(
-    b.variableDeclaration('const', [
-      b.variableDeclarator(
-        b.identifier(name.constant),
-        b.literal(`__testfixtures__/${name.constant}`),
-      ),
-    ]),
-  );
-  constAst.program.body.push(newExport);
-  console.log(recast.print(constAst).code);
-
-  setImports(actionAst, name);
-  setImports(reducerAst, name);
-
-  console.log(recast.print(actionAst).code);
-  console.log(recast.print(reducerAst).code);
+export const createConst = (ast, name, prefix) => {
+  const exists = tokenUsed(ast, name);
+  if (!exists) {
+    const newExport = b.exportNamedDeclaration(
+      b.variableDeclaration('const', [
+        b.variableDeclarator(b.identifier(name.constant), b.literal(`${prefix}/${name.constant}`)),
+      ]),
+    );
+    ast.program.body.push(newExport);
+  }
 };
