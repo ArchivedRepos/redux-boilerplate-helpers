@@ -1,5 +1,4 @@
-import fs from 'fs';
-import { join } from 'path';
+/* @flow */
 import recast, { types } from 'recast';
 import { constant, camel } from 'change-case';
 import assert from 'assert';
@@ -56,7 +55,7 @@ export const setImports = (
       const hasIdentifier = node.specifiers.map(n.ImportSpecifier.check).every(val => val === true);
       const correctLiteral = node.source.value === moduleName;
 
-      // make sure the other conditions are true before evaluating this one
+      // make sure the other conditions are true before checking this one
       const containsSpecifier = () =>
         node.specifiers
           .map(specifier => specifier.imported)
