@@ -3,37 +3,7 @@ import { readFileSync } from 'fs';
 import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 
-//TODO: cleanup this file...
-
 const babelrc = JSON.parse(readFileSync(join(__dirname, '.babelrc')));
-
-export const setOptions = prod => {
-  if (process.env.NODE_ENV === 'production' || prod) {
-    return {
-      plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-          sourceMap: false,
-          mangle: true,
-          compress: {
-            warnings: false,
-            dead_code: true,
-            unused: true,
-            drop_console: true,
-          },
-        }),
-      ],
-      performance: { hints: 'warning' },
-    };
-  }
-  return {
-    plugins: [],
-    performance: { hints: false },
-    devtool: 'source-map',
-    devServer: {
-      disableHostCheck: true,
-    },
-  };
-};
 
 const base = {
   module: {
@@ -48,26 +18,34 @@ const base = {
   },
 };
 
-export const createWebConfig = options => ({
+export const webConfig = {
   entry: [join(__dirname, 'src/helper.js')],
-  plugins: [...options.plugins],
   ...base,
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      compressor: {
+        pure_getters: true,
+        unsafe: true,
+        unsafe_comps: true,
+        screw_ie8: true,
+        warnings: false,
+      }
+    }),
+  ],
   output: {
     path: join(__dirname, 'dist'),
     filename: 'index.js',
     publicPath: '/',
+    library: 'CreateAction',
+    libraryTarget: 'umd',
   },
-  target: 'web',
-  devtool: options.devtool,
-  performance: options.performance,
-  devServer: options.devServer,
-});
+  devtool: 'source-map',
+};
 
-export const createToolConfig = options => ({
+export const toolConfig = {
   entry: [join(__dirname, 'src/cli.js')],
   plugins: [
     new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
-    ...options.plugins
   ],
   ...base,
   output: {
@@ -80,9 +58,6 @@ export const createToolConfig = options => ({
     __dirname: false,
   },
   externals: [nodeExternals()],
-  devtool: options.devtool,
-  performance: options.performance,
-  devServer: options.devServer,
-});
+};
 
-export default [createWebConfig(setOptions()), createToolConfig(setOptions())];
+export default [webConfig, toolConfig];
