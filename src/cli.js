@@ -3,8 +3,9 @@ import addReduxActions from './fileOperations';
 
 const argv = parseArgs(process.argv.slice(2), {
   boolean: ['dry', 'semi', 'use-tabs', 'single0quote', 'bracket-spacing', 'verbose'],
-  string: ['print-width', 'tab-width', 'trailing-comma'],
+  string: ['dir', 'print-width', 'tab-width', 'trailing-comma'],
   default: {
+    dir: './',
     semi: true,
     'bracket-spacing': true,
   },
