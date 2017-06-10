@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cli adds actions to existing files in dry run 1`] = `
+"==== addToExisting/constants.js ====
+export const TEST_ACTION = '__testfixtures__/TEST_ACTION';
+export const ANOTHER_ACTION = '__testfixtures__/ANOTHER_ACTION';
+export const ONE_ACTION = 'addToExisting/ONE_ACTION';
+export const TWO_ACTION = 'addToExisting/TWO_ACTION';
+
+==== addToExisting/actions.js ====
+import { createAction } from 'redux-boilerplate-helpers';
+import {
+  TEST_ACTION,
+  ANOTHER_ACTION,
+  ONE_ACTION,
+  TWO_ACTION,
+} from './constants';
+
+export const testAction = createAction(TEST_ACTION);
+export const anotherAction = createAction(ANOTHER_ACTION);
+export const oneAction = createAction(ONE_ACTION);
+export const twoAction = createAction(TWO_ACTION);
+
+==== addToExisting/reducer.js ====
+import {
+  TEST_ACTION,
+  ANOTHER_ACTION,
+  ONE_ACTION,
+  TWO_ACTION,
+} from './constants';
+
+const initialState = {};
+
+function testReducer(state = initialState, action) {
+  switch (action.type) {
+    case TEST_ACTION:
+      return { ...state, test: 10 };
+    case ANOTHER_ACTION:
+      return { ...state, another: 'test' };
+    case ONE_ACTION:
+      return {
+        ...state,
+      };
+    case TWO_ACTION:
+      return {
+        ...state,
+      };
+    default:
+      return state;
+  }
+}
+
+export default testReducer;
+
+"
+`;
+
+exports[`cli creates files if they are not present 1`] = `
+"export const ONE_ACTION = 'blank/ONE_ACTION';
+export const TWO_ACTION = 'blank/TWO_ACTION';
+"
+`;
+
+exports[`cli creates files if they are not present 2`] = `
+"import { createAction } from 'redux-boilerplate-helpers';
+import { ONE_ACTION, TWO_ACTION } from './constants';
+export const oneAction = createAction(ONE_ACTION);
+export const twoAction = createAction(TWO_ACTION);
+"
+`;
+
+exports[`cli creates files if they are not present 3`] = `
+"import { ONE_ACTION, TWO_ACTION } from './constants';
+const initialState = {};
+
+function reducer(state = initialState, action) {
+  switch (action.type) {
+    case ONE_ACTION:
+      return {
+        ...state,
+      };
+    case TWO_ACTION:
+      return {
+        ...state,
+      };
+    default:
+      return state;
+  }
+}
+
+export default reducer;
+"
+`;

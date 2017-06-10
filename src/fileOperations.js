@@ -15,8 +15,9 @@ import {
 
 const addReduxActions = (dir: string, actions: Array<string>, options: Object = {}) => {
   const names = actions.map(generateNames);
-  const workingDir = join(process.cwd(), dir);
-  const prefix = workingDir.split(sep).slice(-1).join('/');
+  const prefixDir = dir[dir.length - 1] !== sep ? `${dir}${sep}` : dir;
+  const workingDir = join(process.cwd(), prefixDir);
+  const prefix = workingDir.split(sep).slice(-2).join('/').slice(0, -1);
   const files = fs.readdirSync(workingDir);
 
   if (!files.includes('constants.js')) {
@@ -28,20 +29,20 @@ const addReduxActions = (dir: string, actions: Array<string>, options: Object = 
   }
 
   if (!files.includes('reducer.js')) {
-    const reducerTemplate = fs.readFileSync('../assets/reducer.js');
+    const reducerTemplate = fs.readFileSync(join(__dirname, '../assets/reducer.js'), 'utf8');
     fs.writeFileSync(
       join(workingDir, 'reducer.js'),
       prettier.format(reducerTemplate, options.prettier),
     );
   }
 
-  const constantsFile = fs.readFileSync(join(workingDir, 'constants.js'));
+  const constantsFile = fs.readFileSync(join(workingDir, 'constants.js'), 'utf8');
   const constantsAst = recast.parse(constantsFile, parseOptions);
 
-  const actionsFile = fs.readFileSync(join(workingDir, 'actions.js'));
+  const actionsFile = fs.readFileSync(join(workingDir, 'actions.js'), 'utf8');
   const actionsAst = recast.parse(actionsFile, parseOptions);
 
-  const reducerFile = fs.readFileSync(join(workingDir, 'reducer.js'));
+  const reducerFile = fs.readFileSync(join(workingDir, 'reducer.js'), 'utf8');
   const reducerAst = recast.parse(reducerFile, parseOptions);
 
   names.forEach(name => {
@@ -54,17 +55,20 @@ const addReduxActions = (dir: string, actions: Array<string>, options: Object = 
     createReducerCase(reducerAst, name);
   });
 
-  /* eslint-disable no-underscore-dangle */
-  const constantsResult = prettier.__debug.formatAST(constantsAst, options.prettier).formatted;
-  const actionsResult = prettier.__debug.formatAST(actionsAst, options.prettier).formatted;
-  const reducerResult = prettier.__debug.formatAST(reducerAst, options.prettier).formatted;
+  // const constantsResult = prettier.__debug.formatAST(constantsAst, options.prettier).formatted;
+  // const actionsResult = prettier.__debug.formatAST(actionsAst, options.prettier).formatted;
+  // const reducerResult = prettier.__debug.formatAST(reducerAst, options.prettier).formatted;
+
+  const constantsResult = prettier.format(recast.print(constantsAst).code, options.prettier);
+  const actionsResult = prettier.format(recast.print(actionsAst).code, options.prettier);
+  const reducerResult = prettier.format(recast.print(reducerAst).code, options.prettier);
 
   if (options.dry) {
-    console.log(`==== ${join(workingDir, 'constants.js')} ====`);
+    console.log(`==== ${join(dir, 'constants.js')} ====`);
     console.log(constantsResult);
-    console.log(`==== ${join(workingDir, 'actions.js')} ====`);
+    console.log(`==== ${join(dir, 'actions.js')} ====`);
     console.log(actionsResult);
-    console.log(`==== ${join(workingDir, 'reducer.js')} ====`);
+    console.log(`==== ${join(dir, 'reducer.js')} ====`);
     console.log(reducerResult);
   } else {
     fs.writeFileSync(join(workingDir, 'constants.js'), constantsResult);

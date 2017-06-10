@@ -29,12 +29,15 @@ exports[`File Operations adds an action to the files 6`] = `
 Array [
   Array [
     "/tmp",
+    "utf8",
   ],
   Array [
     "/tmp",
+    "utf8",
   ],
   Array [
     "/tmp",
+    "utf8",
   ],
 ]
 `;
@@ -65,7 +68,6 @@ Array [
         },
       },
       "name": null,
-      "needsParens": false,
       "program": Program {
         "body": Array [],
         "errors": Array [],
@@ -81,7 +83,6 @@ Array [
             "line": 1,
           },
         },
-        "needsParens": false,
         "sourceType": "module",
         "type": "Program",
       },
@@ -111,7 +112,6 @@ Array [
         },
       },
       "name": null,
-      "needsParens": false,
       "program": Program {
         "body": Array [],
         "errors": Array [],
@@ -127,7 +127,6 @@ Array [
             "line": 1,
           },
         },
-        "needsParens": false,
         "sourceType": "module",
         "type": "Program",
       },
@@ -154,7 +153,6 @@ Array [
         },
       },
       "name": null,
-      "needsParens": false,
       "program": Program {
         "body": Array [],
         "errors": Array [],
@@ -170,7 +168,6 @@ Array [
             "line": 1,
           },
         },
-        "needsParens": false,
         "sourceType": "module",
         "type": "Program",
       },
@@ -200,7 +197,6 @@ Array [
         },
       },
       "name": null,
-      "needsParens": false,
       "program": Program {
         "body": Array [],
         "errors": Array [],
@@ -216,7 +212,6 @@ Array [
             "line": 1,
           },
         },
-        "needsParens": false,
         "sourceType": "module",
         "type": "Program",
       },
@@ -243,7 +238,6 @@ Array [
         },
       },
       "name": null,
-      "needsParens": false,
       "program": Program {
         "body": Array [],
         "errors": Array [],
@@ -259,7 +253,6 @@ Array [
             "line": 1,
           },
         },
-        "needsParens": false,
         "sourceType": "module",
         "type": "Program",
       },
@@ -289,7 +282,6 @@ Array [
         },
       },
       "name": null,
-      "needsParens": false,
       "program": Program {
         "body": Array [],
         "errors": Array [],
@@ -305,7 +297,6 @@ Array [
             "line": 1,
           },
         },
-        "needsParens": false,
         "sourceType": "module",
         "type": "Program",
       },
@@ -337,7 +328,6 @@ Array [
         },
       },
       "name": null,
-      "needsParens": false,
       "program": Program {
         "body": Array [],
         "errors": Array [],
@@ -353,7 +343,6 @@ Array [
             "line": 1,
           },
         },
-        "needsParens": false,
         "sourceType": "module",
         "type": "Program",
       },
@@ -363,7 +352,7 @@ Array [
       "camel": "testOne",
       "constant": "TEST_ONE",
     },
-    "/tmp",
+    "/tm",
   ],
   Array [
     Object {
@@ -381,7 +370,6 @@ Array [
         },
       },
       "name": null,
-      "needsParens": false,
       "program": Program {
         "body": Array [],
         "errors": Array [],
@@ -397,7 +385,6 @@ Array [
             "line": 1,
           },
         },
-        "needsParens": false,
         "sourceType": "module",
         "type": "Program",
       },
@@ -407,7 +394,7 @@ Array [
       "camel": "testName",
       "constant": "TEST_NAME",
     },
-    "/tmp",
+    "/tm",
   ],
   Array [
     Object {
@@ -425,7 +412,6 @@ Array [
         },
       },
       "name": null,
-      "needsParens": false,
       "program": Program {
         "body": Array [],
         "errors": Array [],
@@ -441,7 +427,6 @@ Array [
             "line": 1,
           },
         },
-        "needsParens": false,
         "sourceType": "module",
         "type": "Program",
       },
@@ -451,7 +436,7 @@ Array [
       "camel": "testName",
       "constant": "TEST_NAME",
     },
-    "/tmp",
+    "/tm",
   ],
 ]
 `;
@@ -474,7 +459,6 @@ Array [
         },
       },
       "name": null,
-      "needsParens": false,
       "program": Program {
         "body": Array [],
         "errors": Array [],
@@ -490,7 +474,6 @@ Array [
             "line": 1,
           },
         },
-        "needsParens": false,
         "sourceType": "module",
         "type": "Program",
       },
@@ -517,7 +500,6 @@ Array [
         },
       },
       "name": null,
-      "needsParens": false,
       "program": Program {
         "body": Array [],
         "errors": Array [],
@@ -533,7 +515,6 @@ Array [
             "line": 1,
           },
         },
-        "needsParens": false,
         "sourceType": "module",
         "type": "Program",
       },
@@ -560,7 +541,6 @@ Array [
         },
       },
       "name": null,
-      "needsParens": false,
       "program": Program {
         "body": Array [],
         "errors": Array [],
@@ -576,7 +556,6 @@ Array [
             "line": 1,
           },
         },
-        "needsParens": false,
         "sourceType": "module",
         "type": "Program",
       },
@@ -608,7 +587,6 @@ Array [
         },
       },
       "name": null,
-      "needsParens": false,
       "program": Program {
         "body": Array [],
         "errors": Array [],
@@ -624,7 +602,6 @@ Array [
             "line": 1,
           },
         },
-        "needsParens": false,
         "sourceType": "module",
         "type": "Program",
       },
@@ -651,7 +628,6 @@ Array [
         },
       },
       "name": null,
-      "needsParens": false,
       "program": Program {
         "body": Array [],
         "errors": Array [],
@@ -667,7 +643,6 @@ Array [
             "line": 1,
           },
         },
-        "needsParens": false,
         "sourceType": "module",
         "type": "Program",
       },
@@ -694,7 +669,6 @@ Array [
         },
       },
       "name": null,
-      "needsParens": false,
       "program": Program {
         "body": Array [],
         "errors": Array [],
@@ -710,7 +684,6 @@ Array [
             "line": 1,
           },
         },
-        "needsParens": false,
         "sourceType": "module",
         "type": "Program",
       },
@@ -745,12 +718,15 @@ exports[`File Operations adds multiple actions to the files 6`] = `
 Array [
   Array [
     "/tmp",
+    "utf8",
   ],
   Array [
     "/tmp",
+    "utf8",
   ],
   Array [
     "/tmp",
+    "utf8",
   ],
 ]
 `;
@@ -803,16 +779,20 @@ Array [
 exports[`File Operations creates files that are not preset 6`] = `
 Array [
   Array [
-    "../assets/reducer.js",
+    "/tmp",
+    "utf8",
   ],
   Array [
     "/tmp",
+    "utf8",
   ],
   Array [
     "/tmp",
+    "utf8",
   ],
   Array [
     "/tmp",
+    "utf8",
   ],
 ]
 `;

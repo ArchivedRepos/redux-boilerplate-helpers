@@ -10,3 +10,4 @@ coverage
 logfile.log
 npm-debug.log
 .idea
+bin

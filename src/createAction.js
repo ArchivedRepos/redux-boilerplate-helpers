@@ -35,7 +35,9 @@ export const setImports = (
 
   if (constImport.length > 0) {
     const specifiers = constImport[0].specifiers;
-    const importExists = specifiers.map(specifier => specifier.local.name).includes(name.constant);
+    const importExists = specifiers
+      .map(specifier => specifier && specifier.local && specifier.local.name)
+      .includes(name.constant);
 
     if (!importExists) {
       const newImport = b.importSpecifier(b.identifier(name.constant));
