@@ -1,6 +1,6 @@
 // @flow
 import fs from 'fs';
-import { join, sep } from 'path';
+import { join, isAbsolute, sep } from 'path';
 import recast from 'recast';
 import prettier from 'prettier';
 
@@ -16,7 +16,7 @@ import {
 const addReduxActions = (dir: string, actions: Array<string>, options: Object = {}) => {
   const names = actions.map(generateNames);
   const prefixDir = dir[dir.length - 1] !== sep ? `${dir}${sep}` : dir;
-  const workingDir = join(process.cwd(), prefixDir);
+  const workingDir = isAbsolute(prefixDir) ? prefixDir : join(process.cwd(), prefixDir);
   const prefix = workingDir.split(sep).slice(-2).join('/').slice(0, -1);
   const files = fs.readdirSync(workingDir);
 
