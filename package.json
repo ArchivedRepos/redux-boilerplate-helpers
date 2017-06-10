@@ -1,7 +1,10 @@
 {
-  "name": "redux-codemods",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "redux-boilerplate-helpers",
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "bin": {
+    "rdxh": "./bin/index.js"
+  },
   "license": "MIT",
   "dependencies": {
     "assert": "^1.4.1",
@@ -13,9 +16,10 @@
     "recast": "^0.12.5"
   },
   "scripts": {
-    "start": "jscodeshift",
+    "start": "bin/index.js",
     "test": "jest",
-    "coverage": "npm test -- --coverage"
+    "coverage": "npm test -- --coverage",
+    "build": "webpack"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

@@ -29,7 +29,7 @@ export const webConfig = {
         unsafe_comps: true,
         screw_ie8: true,
         warnings: false,
-      }
+      },
     }),
   ],
   output: {
@@ -44,9 +44,7 @@ export const webConfig = {
 
 export const toolConfig = {
   entry: [join(__dirname, 'src/cli.js')],
-  plugins: [
-    new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
-  ],
+  plugins: [new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true })],
   ...base,
   output: {
     path: join(__dirname, 'bin'),
