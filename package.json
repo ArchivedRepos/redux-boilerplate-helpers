@@ -19,7 +19,8 @@
     "start": "bin/index.js",
     "test": "jest",
     "coverage": "npm test -- --coverage",
-    "build": "webpack"
+    "build": "webpack",
+    "format": "eslint src --fix && prettier --write --single-quote --trailing-comma=all --print-width=100 \"src/**/*.js\""
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
