@@ -8,6 +8,7 @@
 <details>
 <summary><strong>Table of Contents</strong></summary>
 
+- [Demo](#demo)
 - [Tool](#tool)
 - [Action Creator](#actioncreator)
 - [Usage](#usage)
@@ -18,8 +19,8 @@
 
 ---
 
-A commandline tool and small helper library that helps you cut down on the amount of typing you
-need to do while writing Redux boilerplate.
+A commandline tool and small helper library that helps you cut down on the amount of typing you need
+to do while writing Redux boilerplate.
 
 Currently, the existing tools used for automating Redux Boilerplate only create new files from
 templates and are unable to modify existing files. `redux-boilerplate-helpers`'s tool parses your
@@ -32,6 +33,9 @@ missing any of the files, the tool will create new ones for you.
 format. That being said, this tool should flexible enough to be modified to handle most setups (See
 [Roadmap](#roadmap) for more info).
 
+
+## Demo
+Try out the online interactive demo [here](http://alx.lu/rdxh-demo/).
 
 ## Tool
 Let's start out with the following three files which already have content in them: 
