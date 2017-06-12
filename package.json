@@ -6,6 +6,7 @@
     "rdxh": "./bin/index.js"
   },
   "license": "MIT",
+  "repository": "https://github.com/alxlu/redux-boilerplate-helpers.git",
   "dependencies": {
     "assert": "^1.4.1",
     "babylon": "^6.17.2",
