@@ -8,6 +8,7 @@ export const ONE_ACTION = 'addToExisting/ONE_ACTION';
 export const TWO_ACTION = 'addToExisting/TWO_ACTION';
 
 ==== addToExisting/actions.js ====
+/* eslint-disable */
 import { createAction } from 'redux-boilerplate-helpers';
 import {
   TEST_ACTION,

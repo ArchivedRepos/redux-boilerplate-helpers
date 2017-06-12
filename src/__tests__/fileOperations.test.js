@@ -26,6 +26,7 @@ jest.mock('fs', () => ({
 
 jest.mock('path', () => ({
   join: jest.fn(() => '/tmp'),
+  isAbsolute: jest.fn(() => false),
 }));
 
 describe('File Operations', () => {
