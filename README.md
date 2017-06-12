@@ -7,6 +7,7 @@
 
 <details>
 <summary><strong>Table of Contents</strong></summary>
+
 - [Tool](#tool)
 - [Action Creator](#actioncreator)
 - [Usage](#usage)
@@ -21,7 +22,7 @@ A commandline tool and small helper library that helps you cut down on the amoun
 need to do while writing Redux boilerplate.
 
 Currently, the existing tools used for automating Redux Boilerplate only create new files from
-templates and are unable to modify existing files. `redux-boielrplate-helpers`'s tool parses your
+templates and are unable to modify existing files. `redux-boilerplate-helpers`'s tool parses your
 code into an AST (Abstract Syntax Tree) to automate adding Redux boilerplate code into your existing
 files. If you already have existing[\*](#format-footnote) action creators, constants, or a reducer
 in a file, it will ensure the code you want to add is put in the correct place. And if you are
@@ -210,7 +211,7 @@ then add the following to the `scripts` secion of your `package.json`
 {
   ...
   "scripts": {
-    "rdxh": "rdxh",
+    "rdxh": "rdxh"
   },
   ...
 }
