@@ -7,3 +7,4 @@ webpack.config.*
 .gitignore
 yarn.lock
 .flowconfig
+.travis.yml

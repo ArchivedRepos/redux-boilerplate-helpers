@@ -20,7 +20,8 @@
     "test": "jest",
     "coverage": "npm test -- --coverage",
     "build": "webpack",
-    "format": "eslint src --fix && prettier --write --single-quote --trailing-comma=all --print-width=100 \"src/**/*.js\""
+    "format": "eslint src --fix && prettier --write --single-quote --trailing-comma=all --print-width=100 \"src/**/*.js\"",
+    "coveralls": "npm run coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -33,6 +34,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.24.1",
     "babel-runtime": "^6.23.0",
+    "coveralls": "^2.13.1",
     "cross-spawn": "^5.1.0",
     "del": "^3.0.0",
     "eslint": "^3.19.0",
