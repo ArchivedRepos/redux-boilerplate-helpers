@@ -8,7 +8,7 @@ const b = types.builders;
 
 export const parseOptions = {
   parser: {
-    parse(source) {
+    parse(source: Object) {
       // eslint-disable-next-line global-require
       return require('babylon').parse(source, {
         sourceType: 'module',
@@ -18,12 +18,22 @@ export const parseOptions = {
   },
 };
 
-export const generateNames = varName => ({ constant: constant(varName), camel: camel(varName) });
+type Names = {
+  constant: string,
+  camel: string,
+};
+export const generateNames = (varName: string): Names => ({
+  constant: constant(varName),
+  camel: camel(varName),
+});
 
 export const setImports = (
-  ast,
-  name,
-  { insertHelper, moduleName = 'redux-boilerplate-helpers' } = {},
+  ast: Object,
+  name: Names,
+  {
+    insertHelper,
+    moduleName = 'redux-boilerplate-helpers',
+  }: { insertHelper?: boolean, moduleName?: string } = {},
 ) => {
   // get all the import declarations in file
   const importStatements = ast.program.body.filter(node => n.ImportDeclaration.check(node));
@@ -77,7 +87,7 @@ export const setImports = (
   }
 };
 
-export const tokenUsed = (ast, name) => {
+export const tokenUsed = (ast: Object, name: Names) => {
   let exists = false;
   recast.visit(ast, {
     visitIdentifier(path) {
@@ -92,7 +102,7 @@ export const tokenUsed = (ast, name) => {
   return exists;
 };
 
-export const createAction = (ast, name) => {
+export const createAction = (ast: Object, name: Names) => {
   const exists = tokenUsed(ast, name);
 
   if (!exists) {
@@ -108,7 +118,7 @@ export const createAction = (ast, name) => {
   }
 };
 
-export const createReducerCase = (ast, name) => {
+export const createReducerCase = (ast: Object, name: Names) => {
   const exists = tokenUsed(ast, name);
 
   const insertIntoSwitch = (switchStatement, caseStatement) => {
@@ -144,7 +154,7 @@ export const createReducerCase = (ast, name) => {
   }
 };
 
-export const createConst = (ast, name, prefix) => {
+export const createConst = (ast: Object, name: Names, prefix: string) => {
   const exists = tokenUsed(ast, name);
   if (!exists) {
     const newExport = b.exportNamedDeclaration(

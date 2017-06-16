@@ -1,8 +1,14 @@
-/* @flow */
+// @flow
 import invariant from 'invariant';
 
-export const identity = payload => payload;
+export const identity = (payload: any): any => payload;
 const defaultName = 'payload';
+
+type Action = {
+  type: string,
+  [key: string]: any,
+  meta?: any,
+};
 
 const createAction = (
   type: string,
@@ -13,9 +19,9 @@ const createAction = (
     payloadCreator instanceof Function || payloadCreator === null,
     'payloadCreator should be a function',
   );
-  return (...args) => {
+  return (...args: any) => {
     const payload = payloadCreator === null ? identity(...args) : payloadCreator(...args);
-    const action = {
+    const action: Action = {
       type,
       [name]: payload,
     };
