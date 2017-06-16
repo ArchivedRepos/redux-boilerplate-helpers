@@ -59,7 +59,8 @@
     ],
     "coveragePathIgnorePatterns": [
       "__*",
-      "<rootDir>/src/cli.js"
+      "<rootDir>/src/cli.js",
+      "<rootDir>/src/testUtils.js"
     ]
   }
 }
