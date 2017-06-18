@@ -1,33 +1,34 @@
 // @flow
 import invariant from 'invariant';
 
-export const identity = (payload: any): any => payload;
+export const identity = <I>(payload: I): I => payload;
 const defaultName = 'payload';
 
-type Action = {
+type Action<A> = {|
   type: string,
-  [key: string]: any,
-  meta?: any,
-};
+  [key: string]: A,
+  meta?: mixed,
+|};
 
-const createAction = (
+const createAction = <A, P: Array<*>>(
   type: string,
-  payloadCreator: Function = identity,
-  { name = defaultName, meta }: { name: string, meta: Function } = {},
-) => {
+  payloadCreator: null | (...args: P) => A = identity,
+  { name = defaultName, meta }: { name: string, meta?: Function } = {},
+): ((...args: P) => Action<A>) => {
   invariant(
     payloadCreator instanceof Function || payloadCreator === null,
     'payloadCreator should be a function',
   );
-  return (...args: any) => {
+  return (...args) => {
     const payload = payloadCreator === null ? identity(...args) : payloadCreator(...args);
-    const action: Action = {
+    const action: Action<*> = {
       type,
       [name]: payload,
     };
 
-    const hasMeta = meta instanceof Function;
-    if (hasMeta) action.meta = meta(...args);
+    if (meta instanceof Function) {
+      action.meta = meta(...args);
+    }
 
     return action;
   };
