@@ -13,7 +13,7 @@
     "change-case": "^3.0.1",
     "invariant": "^2.2.2",
     "minimist": "^1.2.0",
-    "prettier": "^1.4.4",
+    "prettier": "^1.14.3",
     "recast": "^0.12.5"
   },
   "scripts": {
